@@ -1,0 +1,68 @@
+@page
+@model razor8.Pages_Blog.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    int stt = 1;
+}
+
+@{
+    var pagingModel = new razor.Helper.PagingModel(){
+        CurrentPage = 3,
+        TotalPage = 20,
+        GenerateUrl = (int? p) => "trang " + p
+    };
+}
+
+<partial name="_PagingXTL" model="@pagingModel"/>
+
+<h1>Danh sách Blog</h1>
+
+<form method="get" asp-page="./Blog/Index">
+    <div class="input-group mr-3">
+        <input placeholder="Nhập tên Blog" type="text" class="form-control" name="SearchString"/>
+        <button class="btn btn-dark">Tìm kiếm</button>
+    </div>
+</form>
+
+<p>
+    <a asp-page="Create" class="btn btn-info mt-3">Tạo bài viết mới</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-center">STT</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Content)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Article) {
+        <tr class="align-middle">
+            <td class="text-center"><strong>@(stt++)</strong></td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Chỉnh sửa</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-success">Xem</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

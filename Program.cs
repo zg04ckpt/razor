@@ -13,8 +13,8 @@ namespace razor8
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<MyBlogContext>(options =>
             {
-                string path = new ConfigurationBuilder().SetBasePath(builder.Environment.ContentRootPath).AddJsonFile("appsettings.json").Build().GetConnectionString("MyBlogContext");
-                options.UseSqlServer(path);
+                
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MyBlogContext"));
             });
 
             var app = builder.Build();
